@@ -1,15 +1,21 @@
 package com.example.demo.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.service.HiService;
+
 @RestController
 public class DemoRestController {
 
+	@Autowired
+	private HiService hiService;
+	
 	@GetMapping(value = "/hi")
 	public String hi() {
-		return "Hi";
+		return hiService.sayHi();
 	}
 
 	@GetMapping(value = "/json", produces = MediaType.APPLICATION_JSON_VALUE)
