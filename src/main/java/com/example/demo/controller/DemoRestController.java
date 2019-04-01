@@ -3,6 +3,8 @@ package com.example.demo.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.service.HiService;
@@ -12,7 +14,7 @@ public class DemoRestController {
 
 	@Autowired
 	private HiService hiService;
-	
+
 	@GetMapping(value = "/hi")
 	public String hi() {
 		return hiService.sayHi();
@@ -23,9 +25,18 @@ public class DemoRestController {
 		return new Hello("Greetings", "Hello World !!");
 	}
 
-	private class Hello {
+	@PostMapping(value = "/jsonpost", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public Hello jsonpost(@RequestBody Hello hello) {
+		return hello;
+	}
+
+	private static class Hello {
 		private String title;
 		private String value;
+
+		public Hello() {
+
+		}
 
 		public Hello(String title, String value) {
 			super();

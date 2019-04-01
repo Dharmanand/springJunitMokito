@@ -25,7 +25,7 @@ public class DemoRestControllerTest {
 
 	@Mock
 	private HiService hiService;
-	
+
 	@InjectMocks
 	private DemoRestController demoRestController;
 
@@ -45,6 +45,17 @@ public class DemoRestControllerTest {
 	@Test
 	public void testJson() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/json").accept(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.title", org.hamcrest.Matchers.is("Greetings")))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.value", org.hamcrest.Matchers.is("Hello World !!")))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.*", org.hamcrest.Matchers.hasSize(2)));
+
+	}
+
+	@Test
+	public void testJsonpost() throws Exception {
+		String json = "{\n" + " \"title\": \"Greetings\",\n" + "\"value\": \"Hello World !!\"\n" + "}";
+		mockMvc.perform(MockMvcRequestBuilders.post("/jsonpost").contentType(MediaType.APPLICATION_JSON).content(json))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.jsonPath("$.title", org.hamcrest.Matchers.is("Greetings")))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.value", org.hamcrest.Matchers.is("Hello World !!")))
